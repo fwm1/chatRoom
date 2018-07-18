@@ -1,0 +1,9 @@
+.content-row .content-row-title{margin-bottom:20px;margin-top:0;font-weight:700;font-size:18px;text-shadow:2px 2px 2px rgba(255,255,255,1)}
+.content-row .content-row-title span{font-weight:400;font-size:14px;color:#ED5565;}
+.flex-item{-webkit-flex:1 auto;flex:1 auto}
+.flex-demo div span{align-self:center;display:inline-block;padding:1rem 1.5rem;}
+.flex-demo>div{
+    display:inline-flex;font-size:1.5em;justify-content:center;margin:.25rem;overflow:hidden; position:relative;
+    background: #a7afb1;
+}
+.flex-demo .flex-item{background:#9fb5df}

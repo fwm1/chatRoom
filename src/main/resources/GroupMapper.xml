@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fwm.mapper.GroupMapper">
+    <insert id="insertGroup" parameterType="Group">
+        INSERT INTO `group_` VALUES  #{group_name}
+    </insert>
+
+    <delete id="deleteGroup">
+        DELETE FROM `user_group` WHERE `group_id` IN (
+            SELECT group_id
+            FROM `group_`
+            WHERE `group_name` = #{group_name};
+        );
+        DELETE FROM `group_` WHERE `group_name` = #{group_name};
+    </delete>
+
+    <select id="getGroupByName" resultType="Group">
+        SELECT *
+        FROM `group_`
+        WHERE group_name=#{group_name}
+    </select>
+    <select id="getGroupsByUserId" resultType="String">
+        SELECT `group_name`
+        FROM `group_`
+        WHERE group_id IN (SELECT `group_id` FROM `user_group` WHERE user_name = #{user_name})
+    </select>
+    <insert id="insertUserGroup">
+        INSERT INTO `user_group` VALUES (#{user_name}, #{group_id})
+    </insert>
+</mapper>

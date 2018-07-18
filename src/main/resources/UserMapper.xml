@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fwm.mapper.UserMapper">
+    <resultMap type="User" id="resultUser">
+        <id property="user_name" column="user_name"/>
+        <result property="email" column="email"/>
+        <result property="address" column="address"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <collection property="impressions" column="user_name" javaType="ArrayList"
+                    ofType="java.lang.String" select="com.fwm.mapper.UserMapper.listImpression"/>
+    </resultMap>
+    <select id="selectUserByName" resultMap="resultUser">
+        SELECT * FROM user_ WHERE user_name LIKE '%${user_name}%'
+    </select>
+    <select id="selectUser"  parameterType="User" resultType="User">
+        SELECT * FROM user_ WHERE email = #{email} AND password = #{password}
+    </select>
+    <insert id="addUser" parameterType="User">
+        INSERT INTO user_(user_name, password,sex,age,email,address,qq_id) VALUES (
+            #{user_name}, #{password},#{sex},#{age},#{email},#{address}, #{qq_id}
+        )
+    </insert>
+    <insert id="addFriend">
+        INSERT INTO user_friend VALUES (#{user_name}, #{friend_name});
+         INSERT INTO user_friend VALUES (#{friend_name}, #{user_name});
+    </insert>
+    <delete id="deleteFriend">
+        DELETE FROM user_friend WHERE `user_name` = #{user_name} AND `friend_name` = #{friend_name};
+        DELETE FROM user_friend WHERE `user_name` = #{friend_name} AND `friend_name` = #{user_name}
+    </delete>
+    <select id="listFriends" resultMap="resultUser">
+        SELECT * FROM user_ WHERE user_name IN (SELECT friend_name FROM user_friend WHERE user_name = #{user_name})
+    </select>
+    <select id="listImpression" resultType="java.lang.String">
+        SELECT `body` FROM impression_ WHERE user_name = #{user_name}
+    </select>
+    <insert id="addImpression" >
+        INSERT INTO impression_(user_name, body) VALUES (#{user_name}, #{body})
+    </insert>
+</mapper>
